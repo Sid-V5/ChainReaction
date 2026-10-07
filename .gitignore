@@ -45,6 +45,7 @@ pnpm-debug.log*
 
 # Playwright & Browser automation
 .playwright-mcp/
+presentation_slides_rendered/
 
 # Academic & PDF materials
 *.pdf
