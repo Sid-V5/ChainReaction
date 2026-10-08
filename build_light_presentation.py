@@ -781,62 +781,59 @@ RETURN DISTINCT r.slug, length(path) AS depth"""
         add_code_card(slide10, rx + Inches(0.20), Inches(4.30), rw - Inches(0.40), Inches(2.35), cmd_txt, label="REDIS COMMAND", font_size=Pt(9))
 
     # ==========================================================================
-    # SLIDE 11: System Synthesis & Conclusion
+    # SLIDE 11: Simple Conclusion & Engineering Takeaway
     # ==========================================================================
-    slide11 = create_light_slide(prs, "SYSTEM SYNTHESIS", "Specialized engines deliver what a single relational store cannot", ACCENT_GREEN, ACCENT_GREEN_BG, pill_w=Inches(2.5))
+    slide11 = create_light_slide(prs, "CONCLUSION", "Three engines, zero architectural compromises", ACCENT_GREEN, ACCENT_GREEN_BG, pill_w=Inches(1.8))
 
     # Lead text
     tb_s11_lead, tf_s11l = add_card_textbox(slide11, Inches(0.8), Inches(1.48), Inches(11.7), Inches(0.40))
     p_s11_l = tf_s11l.paragraphs[0]
-    p_s11_l.text = "ChainReaction eliminates transitive supply chain blind spots by aligning document modeling, graph traversal, and in-memory delivery to their natural workloads."
-    p_s11_l.font.size = Pt(12.5)
-    p_s11_l.font.color.rgb = TEXT_BODY
+    p_s11_l.text = "What we built, what worked, and why a single database was never an option."
+    p_s11_l.font.size = Pt(13)
+    p_s11_l.font.color.rgb = TEXT_MUTED
 
-    # 3 Architectural Outcome Columns
+    # 3 Simple Outcome Columns
     col_w = Inches(3.64)
     col_gap = Inches(0.39)
 
     synthesis_cols = [
         {
-            "tag": "DOCUMENT STORE · MONGODB",
-            "title": "Flexible Schemas & Fast Reads",
+            "tag": "MONGODB · DOCUMENTS",
+            "title": "Fits messy manifests",
             "color": ACCENT_GREEN,
-            "points": [
-                ("Polymorphic Storage", "Single BSON collection unifies diverse manifest formats (npm, PyPI, Maven) without rigid schemas or migrations."),
-                ("Computed Pattern", "Pre-calculates risk_score on ingest; dashboard renders CLEAN/CRIT status badges without read-time arithmetic."),
-                ("Extended Reference", "Denormalizes hot CVE fields into repo docs for instant zero-join dashboard rendering while retaining canonical links."),
-                ("Engine-Level Validation", "$jsonSchema enforces required fields, language enums, and CVSS bounds (0.0–10.0) at the database layer.")
+            "bullets": [
+                "Stored package.json, pom.xml, and requirements.txt in one BSON collection without schema migrations.",
+                "Pre-computed risk scores on ingest so the repository view loads instantly without joins.",
+                "Enforced CVSS bounds (0–10) and required fields in the database using $jsonSchema validation."
             ]
         },
         {
-            "tag": "GRAPH ENGINE · NEO4J",
-            "title": "Transitive Threat Geometry",
+            "tag": "NEO4J · GRAPHS",
+            "title": "Traces deep blast radius",
             "color": ACCENT_CYAN,
-            "points": [
-                ("Index-Free Adjacency", "Traverses relationship pointers in memory, eliminating the exponential latency penalty of recursive SQL joins."),
-                ("Sub-5ms Blast Tracing", "Variable-length Cypher paths (*1..5) instantly reveal upstream services exposed by buried dependencies (e.g. Log4Shell)."),
-                ("Topology-Aware Risk", "Visualizes direct vs transitive risk propagation across microservice dependency boundaries."),
-                ("Breaking Change Simulation", "Traces downstream blast radius before version upgrades to prevent breaking releases in production.")
+            "bullets": [
+                "Traced 1 to 5 hops of dependencies in under 5ms using native Cypher graph traversal.",
+                "Used index-free adjacency to avoid the slow, painful joins of relational databases.",
+                "Instantly highlighted every upstream service exposed when a buried library breaks."
             ]
         },
         {
-            "tag": "IN-MEMORY FABRIC · REDIS",
-            "title": "Sub-Millisecond Delivery",
+            "tag": "REDIS · IN-MEMORY",
+            "title": "Keeps the UI real-time",
             "color": ACCENT_PURPLE,
-            "points": [
-                ("Sorted Sets (ZSET)", "Maintains real-time risk leaderboards with O(log N) retrieval of the most vulnerable microservices."),
-                ("Sub-1ms Query Caching", "TTL-bounded keys (SETEX) capture repeated blast radius graphs, removing redundant traversal overhead."),
-                ("Live WebSocket Pub/Sub", "Pushes zero-day alerts directly to connected frontend canvases without database polling."),
-                ("Decoupled Architecture", "Shields persistent databases from high-frequency telemetry reads and sudden alert spikes.")
+            "bullets": [
+                "Sorted Sets (ZSET) gave us an instant, live risk leaderboard in O(log N) time.",
+                "Cached repeat graph lookups with TTL for sub-1ms response times.",
+                "Pub/Sub streamed live zero-day alerts straight to the browser without polling."
             ]
         }
     ]
 
     for i, col in enumerate(synthesis_cols):
         cx = Inches(0.8) + (i * (col_w + col_gap))
-        add_light_card(slide11, cx, Inches(1.92), col_w, Inches(3.98), bg_color=CARD_BG)
+        add_light_card(slide11, cx, Inches(1.92), col_w, Inches(3.85), bg_color=CARD_BG)
 
-        tb_col, tf_col = add_card_textbox(slide11, cx + Inches(0.22), Inches(2.06), col_w - Inches(0.44), Inches(3.70))
+        tb_col, tf_col = add_card_textbox(slide11, cx + Inches(0.24), Inches(2.10), col_w - Inches(0.48), Inches(3.50))
 
         # Tag
         p_co = tf_col.paragraphs[0]
@@ -848,34 +845,34 @@ RETURN DISTINCT r.slug, length(path) AS depth"""
         # Title
         p_ct = tf_col.add_paragraph()
         p_ct.text = col["title"]
-        p_ct.font.size = Pt(15.5)
+        p_ct.font.size = Pt(17)
         p_ct.font.bold = True
         p_ct.font.color.rgb = TEXT_TITLE
-        p_ct.space_before = Pt(3)
+        p_ct.space_before = Pt(4)
 
-        # Points
-        for pt_h, pt_d in col["points"]:
+        # Bullets
+        for b_text in col["bullets"]:
             p_pt = tf_col.add_paragraph()
-            p_pt.text = f"• {pt_h}: {pt_d}"
-            p_pt.font.size = Pt(10)
+            p_pt.text = f"•  {b_text}"
+            p_pt.font.size = Pt(11)
             p_pt.font.color.rgb = TEXT_BODY
-            p_pt.space_before = Pt(4)
+            p_pt.space_before = Pt(10)
 
-    # Bottom Synthesis Banner (Architectural Verdict)
-    add_light_card(slide11, Inches(0.8), Inches(6.04), Inches(11.7), Inches(1.05), bg_color=CARD_BG, border_color=ACCENT_GREEN)
-    tb_bot, tf_bot = add_card_textbox(slide11, Inches(1.05), Inches(6.14), Inches(11.2), Inches(0.85))
+    # Bottom Synthesis Banner
+    add_light_card(slide11, Inches(0.8), Inches(5.95), Inches(11.7), Inches(1.15), bg_color=CARD_BG, border_color=ACCENT_GREEN)
+    tb_bot, tf_bot = add_card_textbox(slide11, Inches(1.05), Inches(6.08), Inches(11.2), Inches(0.90))
 
     p_b1 = tf_bot.paragraphs[0]
-    p_b1.text = "ARCHITECTURAL VERDICT: THE WORKLOAD DICTATES THE NO-SQL STORE"
-    p_b1.font.size = Pt(11)
+    p_b1.text = "THE TAKEAWAY"
+    p_b1.font.size = Pt(10.5)
     p_b1.font.bold = True
     p_b1.font.color.rgb = ACCENT_GREEN
 
     p_b2 = tf_bot.add_paragraph()
-    p_b2.text = "Real-world supply chains cannot afford one-size-fits-all database compromises. By pairing MongoDB for polymorphic manifests, Neo4j for deep graph paths, and Redis for instant delivery, ChainReaction demonstrates that polyglot persistence delivers sub-5ms analytics, strict data integrity, and complete vulnerability visibility."
-    p_b2.font.size = Pt(10.5)
-    p_b2.font.color.rgb = TEXT_BODY
-    p_b2.space_before = Pt(2)
+    p_b2.text = "Don't force one database to do every job. MongoDB handled the polymorphic documents, Neo4j traced the 5-hop relationships in under 5ms, and Redis kept the UI real-time. Pairing them made the system fast, simple, and resilient."
+    p_b2.font.size = Pt(12)
+    p_b2.font.color.rgb = TEXT_TITLE
+    p_b2.space_before = Pt(3)
 
     # Save
     out_file = os.path.abspath("d:/NoSQLProj/ChainReaction-Engineering-a-Polyglot-NoSQL-Dependency-and-Blast-Radius-Engine.pptx")
