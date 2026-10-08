@@ -60,7 +60,7 @@ def add_card_textbox(slide, x, y, w, h, word_wrap=True, margin_h=0, margin_v=0):
     return tb, tf
 
 
-def create_light_slide(prs, category_text, title_text, pill_color=ACCENT_GREEN, pill_bg=ACCENT_GREEN_BG):
+def create_light_slide(prs, category_text, title_text, pill_color=ACCENT_GREEN, pill_bg=ACCENT_GREEN_BG, pill_w=Inches(3.6)):
     """Creates a slide with clean off-white background and uppercase category badge + title."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
 
@@ -71,7 +71,7 @@ def create_light_slide(prs, category_text, title_text, pill_color=ACCENT_GREEN, 
     bg.line.fill.background()
 
     # Category Pill (NO lines beneath title!)
-    badge = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.42), Inches(3.6), Inches(0.32))
+    badge = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.42), pill_w, Inches(0.32))
     badge.fill.solid()
     badge.fill.fore_color.rgb = pill_bg
     badge.line.color.rgb = pill_color
@@ -779,6 +779,103 @@ RETURN DISTINCT r.slug, length(path) AS depth"""
 
         # Code Block inside card
         add_code_card(slide10, rx + Inches(0.20), Inches(4.30), rw - Inches(0.40), Inches(2.35), cmd_txt, label="REDIS COMMAND", font_size=Pt(9))
+
+    # ==========================================================================
+    # SLIDE 11: AIM3141 Curriculum Mapping & Synthesis
+    # ==========================================================================
+    slide11 = create_light_slide(prs, "AIM3141 CURRICULUM SYNTHESIS", "Direct syllabus mapping: Course outcomes validated in production", ACCENT_GREEN, ACCENT_GREEN_BG, pill_w=Inches(3.8))
+
+    # Lead text
+    tb_s11_lead, tf_s11l = add_card_textbox(slide11, Inches(0.8), Inches(1.48), Inches(11.7), Inches(0.40))
+    p_s11_l = tf_s11l.paragraphs[0]
+    p_s11_l.text = "Every architectural component in ChainReaction maps directly to learning outcomes of the AIM3141 NoSQL curriculum."
+    p_s11_l.font.size = Pt(12.5)
+    p_s11_l.font.color.rgb = TEXT_BODY
+
+    # 3 Syllabus Outcome Columns
+    col_w = Inches(3.64)
+    col_gap = Inches(0.39)
+
+    syllabus_cols = [
+        {
+            "co": "AIM3141.2 · LECTURES 9, 13, 15",
+            "title": "Document & Schema Patterns",
+            "color": ACCENT_GREEN,
+            "points": [
+                ("Polymorphic Manifests", "Heterogeneous package structures (npm, PyPI, Maven) coexisting in a single BSON collection."),
+                ("Computed Pattern", "Pre-calculates risk_score on write to render status badges without read-time computation."),
+                ("Extended Reference", "Denormalizes hot CVE fields into repo docs for instant zero-join dashboard rendering."),
+                ("Compound Indexing", "{ primary_language: 1, stars: -1 } supplies query order without blocking memory sorts (IXSCAN).")
+            ]
+        },
+        {
+            "co": "AIM3141.3 · LECTURES 16–18, 20",
+            "title": "Aggregations & Write Contract",
+            "color": ACCENT_CYAN,
+            "points": [
+                ("Parallel $facet Execution", "Runs independent $group sub-pipelines in parallel over a single input scan for live risk indexes."),
+                ("Analytical Pipeline", "$match → $group → $project → $unwind derives real-time multi-ecosystem vulnerability metrics."),
+                ("Engine-Level $jsonSchema", "Enforces required fields, language enums, and CVSS bounds (0.0–10.0) at the database layer."),
+                ("PyMongo Integration", "Asynchronous FastAPI ASGI layer orchestrating atomic document writes and telemetry streams.")
+            ]
+        },
+        {
+            "co": "AIM3141.5 · LECTURE 35",
+            "title": "Graph Traversal & In-Memory",
+            "color": ACCENT_PURPLE,
+            "points": [
+                ("Index-Free Adjacency", "Follows direct memory pointers; eliminates exponential penalties of recursive SQL self-joins."),
+                ("Variable-Length Cypher", "[:DEPENDS_ON*1..5] evaluates multi-hop blast paths in sub-5ms across deep microservice trees."),
+                ("Redis Sorted Sets (ZSET)", "Maintains O(log N) risk leaderboards for sub-millisecond top-N critical service ranking."),
+                ("TTL Caching & Pub/Sub", "Caches repeated traces (<1ms) with SETEX and streams real-time zero-day alerts over WebSockets.")
+            ]
+        }
+    ]
+
+    for i, col in enumerate(syllabus_cols):
+        cx = Inches(0.8) + (i * (col_w + col_gap))
+        add_light_card(slide11, cx, Inches(1.92), col_w, Inches(3.98), bg_color=CARD_BG)
+
+        tb_col, tf_col = add_card_textbox(slide11, cx + Inches(0.22), Inches(2.06), col_w - Inches(0.44), Inches(3.70))
+
+        # CO Badge
+        p_co = tf_col.paragraphs[0]
+        p_co.text = col["co"]
+        p_co.font.size = Pt(10)
+        p_co.font.bold = True
+        p_co.font.color.rgb = col["color"]
+
+        # Title
+        p_ct = tf_col.add_paragraph()
+        p_ct.text = col["title"]
+        p_ct.font.size = Pt(15.5)
+        p_ct.font.bold = True
+        p_ct.font.color.rgb = TEXT_TITLE
+        p_ct.space_before = Pt(3)
+
+        # Points
+        for pt_h, pt_d in col["points"]:
+            p_pt = tf_col.add_paragraph()
+            p_pt.text = f"• {pt_h}: {pt_d}"
+            p_pt.font.size = Pt(10)
+            p_pt.font.color.rgb = TEXT_BODY
+            p_pt.space_before = Pt(4)
+
+    # Bottom Synthesis Banner (AIM3141.1 & Conclusion)
+    add_light_card(slide11, Inches(0.8), Inches(6.04), Inches(11.7), Inches(1.05), bg_color=CARD_BG, border_color=ACCENT_GREEN)
+    tb_bot, tf_bot = add_card_textbox(slide11, Inches(1.05), Inches(6.14), Inches(11.2), Inches(0.85))
+
+    p_b1 = tf_bot.paragraphs[0]
+    p_b1.text = "AIM3141.1 & ARCHITECTURAL VERDICT: THE WORKLOAD DICTATES THE NO-SQL STORE"
+    p_b1.font.size = Pt(11)
+    p_b1.font.bold = True
+    p_b1.font.color.rgb = ACCENT_GREEN
+
+    p_b2 = tf_bot.add_paragraph()
+    p_b2.text = "Relational systems force compromises on deeply connected graphs and real-time event streams. ChainReaction deliberately applies CAP and PACELC trade-offs: MongoDB delivers flexible document modeling, Neo4j provides instant pointer-hop path geometry, and Redis ensures sub-millisecond in-memory delivery."
+    p_b2.font.size = Pt(10.5)
+    p_b2.font.color.rgb = TEXT_BODY
+    p_b2.space_before = Pt(2)
 
     # Save
     out_file = os.path.abspath("d:/NoSQLProj/ChainReaction-Engineering-a-Polyglot-NoSQL-Dependency-and-Blast-Radius-Engine.pptx")
