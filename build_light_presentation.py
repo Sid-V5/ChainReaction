@@ -781,66 +781,66 @@ RETURN DISTINCT r.slug, length(path) AS depth"""
         add_code_card(slide10, rx + Inches(0.20), Inches(4.30), rw - Inches(0.40), Inches(2.35), cmd_txt, label="REDIS COMMAND", font_size=Pt(9))
 
     # ==========================================================================
-    # SLIDE 11: AIM3141 Curriculum Mapping & Synthesis
+    # SLIDE 11: System Synthesis & Conclusion
     # ==========================================================================
-    slide11 = create_light_slide(prs, "AIM3141 CURRICULUM SYNTHESIS", "Direct syllabus mapping: Course outcomes validated in production", ACCENT_GREEN, ACCENT_GREEN_BG, pill_w=Inches(3.8))
+    slide11 = create_light_slide(prs, "SYSTEM SYNTHESIS", "Specialized engines deliver what a single relational store cannot", ACCENT_GREEN, ACCENT_GREEN_BG, pill_w=Inches(2.5))
 
     # Lead text
     tb_s11_lead, tf_s11l = add_card_textbox(slide11, Inches(0.8), Inches(1.48), Inches(11.7), Inches(0.40))
     p_s11_l = tf_s11l.paragraphs[0]
-    p_s11_l.text = "Every architectural component in ChainReaction maps directly to learning outcomes of the AIM3141 NoSQL curriculum."
+    p_s11_l.text = "ChainReaction eliminates transitive supply chain blind spots by aligning document modeling, graph traversal, and in-memory delivery to their natural workloads."
     p_s11_l.font.size = Pt(12.5)
     p_s11_l.font.color.rgb = TEXT_BODY
 
-    # 3 Syllabus Outcome Columns
+    # 3 Architectural Outcome Columns
     col_w = Inches(3.64)
     col_gap = Inches(0.39)
 
-    syllabus_cols = [
+    synthesis_cols = [
         {
-            "co": "AIM3141.2 · LECTURES 9, 13, 15",
-            "title": "Document & Schema Patterns",
+            "tag": "DOCUMENT STORE · MONGODB",
+            "title": "Flexible Schemas & Fast Reads",
             "color": ACCENT_GREEN,
             "points": [
-                ("Polymorphic Manifests", "Heterogeneous package structures (npm, PyPI, Maven) coexisting in a single BSON collection."),
-                ("Computed Pattern", "Pre-calculates risk_score on write to render status badges without read-time computation."),
-                ("Extended Reference", "Denormalizes hot CVE fields into repo docs for instant zero-join dashboard rendering."),
-                ("Compound Indexing", "{ primary_language: 1, stars: -1 } supplies query order without blocking memory sorts (IXSCAN).")
+                ("Polymorphic Storage", "Single BSON collection unifies diverse manifest formats (npm, PyPI, Maven) without rigid schemas or migrations."),
+                ("Computed Pattern", "Pre-calculates risk_score on ingest; dashboard renders CLEAN/CRIT status badges without read-time arithmetic."),
+                ("Extended Reference", "Denormalizes hot CVE fields into repo docs for instant zero-join dashboard rendering while retaining canonical links."),
+                ("Engine-Level Validation", "$jsonSchema enforces required fields, language enums, and CVSS bounds (0.0–10.0) at the database layer.")
             ]
         },
         {
-            "co": "AIM3141.3 · LECTURES 16–18, 20",
-            "title": "Aggregations & Write Contract",
+            "tag": "GRAPH ENGINE · NEO4J",
+            "title": "Transitive Threat Geometry",
             "color": ACCENT_CYAN,
             "points": [
-                ("Parallel $facet Execution", "Runs independent $group sub-pipelines in parallel over a single input scan for live risk indexes."),
-                ("Analytical Pipeline", "$match → $group → $project → $unwind derives real-time multi-ecosystem vulnerability metrics."),
-                ("Engine-Level $jsonSchema", "Enforces required fields, language enums, and CVSS bounds (0.0–10.0) at the database layer."),
-                ("PyMongo Integration", "Asynchronous FastAPI ASGI layer orchestrating atomic document writes and telemetry streams.")
+                ("Index-Free Adjacency", "Traverses relationship pointers in memory, eliminating the exponential latency penalty of recursive SQL joins."),
+                ("Sub-5ms Blast Tracing", "Variable-length Cypher paths (*1..5) instantly reveal upstream services exposed by buried dependencies (e.g. Log4Shell)."),
+                ("Topology-Aware Risk", "Visualizes direct vs transitive risk propagation across microservice dependency boundaries."),
+                ("Breaking Change Simulation", "Traces downstream blast radius before version upgrades to prevent breaking releases in production.")
             ]
         },
         {
-            "co": "AIM3141.5 · LECTURE 35",
-            "title": "Graph Traversal & In-Memory",
+            "tag": "IN-MEMORY FABRIC · REDIS",
+            "title": "Sub-Millisecond Delivery",
             "color": ACCENT_PURPLE,
             "points": [
-                ("Index-Free Adjacency", "Follows direct memory pointers; eliminates exponential penalties of recursive SQL self-joins."),
-                ("Variable-Length Cypher", "[:DEPENDS_ON*1..5] evaluates multi-hop blast paths in sub-5ms across deep microservice trees."),
-                ("Redis Sorted Sets (ZSET)", "Maintains O(log N) risk leaderboards for sub-millisecond top-N critical service ranking."),
-                ("TTL Caching & Pub/Sub", "Caches repeated traces (<1ms) with SETEX and streams real-time zero-day alerts over WebSockets.")
+                ("Sorted Sets (ZSET)", "Maintains real-time risk leaderboards with O(log N) retrieval of the most vulnerable microservices."),
+                ("Sub-1ms Query Caching", "TTL-bounded keys (SETEX) capture repeated blast radius graphs, removing redundant traversal overhead."),
+                ("Live WebSocket Pub/Sub", "Pushes zero-day alerts directly to connected frontend canvases without database polling."),
+                ("Decoupled Architecture", "Shields persistent databases from high-frequency telemetry reads and sudden alert spikes.")
             ]
         }
     ]
 
-    for i, col in enumerate(syllabus_cols):
+    for i, col in enumerate(synthesis_cols):
         cx = Inches(0.8) + (i * (col_w + col_gap))
         add_light_card(slide11, cx, Inches(1.92), col_w, Inches(3.98), bg_color=CARD_BG)
 
         tb_col, tf_col = add_card_textbox(slide11, cx + Inches(0.22), Inches(2.06), col_w - Inches(0.44), Inches(3.70))
 
-        # CO Badge
+        # Tag
         p_co = tf_col.paragraphs[0]
-        p_co.text = col["co"]
+        p_co.text = col["tag"]
         p_co.font.size = Pt(10)
         p_co.font.bold = True
         p_co.font.color.rgb = col["color"]
@@ -861,18 +861,18 @@ RETURN DISTINCT r.slug, length(path) AS depth"""
             p_pt.font.color.rgb = TEXT_BODY
             p_pt.space_before = Pt(4)
 
-    # Bottom Synthesis Banner (AIM3141.1 & Conclusion)
+    # Bottom Synthesis Banner (Architectural Verdict)
     add_light_card(slide11, Inches(0.8), Inches(6.04), Inches(11.7), Inches(1.05), bg_color=CARD_BG, border_color=ACCENT_GREEN)
     tb_bot, tf_bot = add_card_textbox(slide11, Inches(1.05), Inches(6.14), Inches(11.2), Inches(0.85))
 
     p_b1 = tf_bot.paragraphs[0]
-    p_b1.text = "AIM3141.1 & ARCHITECTURAL VERDICT: THE WORKLOAD DICTATES THE NO-SQL STORE"
+    p_b1.text = "ARCHITECTURAL VERDICT: THE WORKLOAD DICTATES THE NO-SQL STORE"
     p_b1.font.size = Pt(11)
     p_b1.font.bold = True
     p_b1.font.color.rgb = ACCENT_GREEN
 
     p_b2 = tf_bot.add_paragraph()
-    p_b2.text = "Relational systems force compromises on deeply connected graphs and real-time event streams. ChainReaction deliberately applies CAP and PACELC trade-offs: MongoDB delivers flexible document modeling, Neo4j provides instant pointer-hop path geometry, and Redis ensures sub-millisecond in-memory delivery."
+    p_b2.text = "Real-world supply chains cannot afford one-size-fits-all database compromises. By pairing MongoDB for polymorphic manifests, Neo4j for deep graph paths, and Redis for instant delivery, ChainReaction demonstrates that polyglot persistence delivers sub-5ms analytics, strict data integrity, and complete vulnerability visibility."
     p_b2.font.size = Pt(10.5)
     p_b2.font.color.rgb = TEXT_BODY
     p_b2.space_before = Pt(2)
